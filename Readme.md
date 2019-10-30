@@ -1,17 +1,17 @@
 # Ping Pong Service
 This is a project to demonstrate the capabilities of:
 * RSocket RPC
-* (more to come, see roadmap section)
+* more to come, see [roadmap](#roadmap)
 
 # RSocket RPC IDL Background
-RSocket RPC (like gRPC) uses protocol buffers as the Interface Definition Language (IDL) 
+[RSocket RPC](https://github.com/rsocket/rsocket-rpc-java) (like [gRPC](https://grpc.io/)) uses protocol buffers as the Interface Definition Language (IDL) 
 for describing both the service interface and the structure of the payload messages. 
 
 This IDL is essentially text and is shared by communicating parties (client, server etc) and using
 RSocket RPC libraries the client and server can be generated in various programming languages. 
 Java being the one that was chosen for this project.
 
-See src/main/proto/Service.proto
+[See PingPongService IDL](src/main/proto/Service.proto)
 
 # Building
 ./gradlew clean build
@@ -34,9 +34,8 @@ The following clients are still a work in progress:
 * PingsAndSinglePongClient - WIP
 
 # Roadmap
-* Get project working with JIP, to dockerize the app
-  (https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin#quickstart)  
-* Host service within Micronaut
+* Get project working with [JIP]((https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin) ), to dockerize the app 
+* Host service within [Micronaut](https://micronaut.io/)
 * Complete PingPong Service/Client project
   * Two streaming options are not working yet
  
