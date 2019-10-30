@@ -1,7 +1,17 @@
 # Ping Pong Service
-This is a basic project to demonstrate the capabilities of:
+This is a project to demonstrate the capabilities of:
 * RSocket RPC
 * (more to come, see roadmap section)
+
+# RSocket RPC IDL Background
+RSocket RPC (like gRPC) uses protocol buffers as the Interface Definition Language (IDL) 
+for describing both the service interface and the structure of the payload messages. 
+
+This IDL is essentially text and is shared by communicating parties (client, server etc) and using
+RSocket RPC libraries the client and server can be generated in various programming languages. 
+Java being the one that was chosen for this project.
+
+See src/main/proto/Service.proto
 
 # Building
 ./gradlew clean build
