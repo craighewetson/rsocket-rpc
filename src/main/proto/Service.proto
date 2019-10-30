@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package io.rsocket.rpc.testing;
+
+import "google/protobuf/empty.proto";
+
+option java_package = "com.hewecode.rsocketrpc.pingpong.protobuf";
+option java_outer_classname = "PingPongServiceProto";
+option java_multiple_files = true;
+
+/*
+Copied from https://docs.netifi.com/1.5.3/protobuf_rsocket/
+*/
+service PingPongService {
+    rpc ping (Ping) returns (Pong) {}
+
+    rpc pingAndForget (Ping) returns (google.protobuf.Empty) {}
+
+    rpc lotsOfPongs (Ping) returns (stream Pong) {}
+
+    rpc lotsOfPings (stream Ping) returns (Pong) {}
+
+    rpc lotsOfPingsAndPongs (stream Ping) returns (stream Pong) {}
+}
+
+message Ping {
+    string ball = 1;
+}
+
+message Pong {
+    string ball = 1;
+}
