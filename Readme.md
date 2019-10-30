@@ -34,7 +34,7 @@ The following clients are still a work in progress:
 * PingsAndSinglePongClient - WIP
 
 # Roadmap
-* Get project working with [JIP]((https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin) ), to dockerize the app 
+* Get project working with [JIP](https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin ), to dockerize the app 
 * Host service within [Micronaut](https://micronaut.io/)
 * Complete PingPong Service/Client project
   * Two streaming options are not working yet
