@@ -1,4 +1,4 @@
-package com.hewecode.rsocketrpc.client;
+package com.hewecode.rsocketrpc;
 
 import com.hewecode.rsocketrpc.pingpong.protobuf.Ping;
 import com.hewecode.rsocketrpc.pingpong.protobuf.PingPongServiceClient;

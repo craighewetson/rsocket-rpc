@@ -1,0 +1,95 @@
+buildscript {
+    dependencies {
+        classpath "com.google.protobuf:protobuf-gradle-plugin:$protobufPluginVersion"
+    }
+}
+
+plugins {
+    id 'com.google.protobuf' version '0.8.10' apply false
+}
+
+apply plugin: 'com.google.protobuf'
+apply plugin: 'groovy'
+
+dependencies {
+    compile project(':api')
+
+    implementation "io.rsocket:rsocket-core:$rsocketVersion"
+    implementation "io.rsocket:rsocket-transport-netty:$rsocketVersion"
+    compile "com.google.protobuf:protobuf-java:$protocVersion"
+    implementation "io.rsocket.rpc:rsocket-rpc-core:$rsocketRpcProtobuf"
+    implementation "io.rsocket.rpc:rsocket-rpc-protobuf:$rsocketRpcProtobuf"
+
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:$protocVersion"
+    }
+    plugins {
+        rsocketRpc {
+            artifact = "io.rsocket.rpc:rsocket-rpc-protobuf:$rsocketRpcProtobuf"
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            rsocketRpc {}
+        }
+    }
+}
+
+
+task startPingAndForgetClient(type: JavaExec) {
+    dependsOn build
+    group = "Execution"
+    description = "Run the Ping and forget client"
+    classpath = sourceSets.main.runtimeClasspath
+    main = "com.hewecode.rsocketrpc.PingAndForgetClient"
+    systemProperties.rsocketUseWebsockets = "$rsocketUseWebsockets"
+    systemProperties.rsocketPort = "$rsocketPort"
+    systemProperties.rsocketHost = "$rsocketHost"
+}
+
+task startSinglePingAndPongClient(type: JavaExec) {
+    dependsOn build
+    group = "Execution"
+    description = "Run the single ping with single pong client"
+    classpath = sourceSets.main.runtimeClasspath
+    main = "com.hewecode.rsocketrpc.SinglePingPongClient"
+    systemProperties.rsocketUseWebsockets = "$rsocketUseWebsockets"
+    systemProperties.rsocketPort = "$rsocketPort"
+    systemProperties.rsocketHost = "$rsocketHost"
+}
+
+task startSinglePingAndLotsOfPongsClient(type: JavaExec) {
+    dependsOn build
+    group = "Execution"
+    description = "Run the single ping with multiple returning pongs client"
+    classpath = sourceSets.main.runtimeClasspath
+    main =  "com.hewecode.rsocketrpc.SinglePingLotsOfPongsClient"
+    systemProperties.rsocketUseWebsockets = "$rsocketUseWebsockets"
+    systemProperties.rsocketPort = "$rsocketPort"
+    systemProperties.rsocketHost = "$rsocketHost"
+}
+
+task startPingsAndSinglePongClient(type: JavaExec) {
+    dependsOn build
+    group = "Execution"
+    description = "Run the pings with single returning pong client"
+    classpath = sourceSets.main.runtimeClasspath
+    main =  "com.hewecode.rsocketrpc.PingsAndSinglePongClient"
+    systemProperties.rsocketUseWebsockets = "$rsocketUseWebsockets"
+    systemProperties.rsocketPort = "$rsocketPort"
+    systemProperties.rsocketHost = "$rsocketHost"
+}
+
+task startPingsAndPongsClient(type: JavaExec) {
+    dependsOn build
+    group = "Execution"
+    description = "Run the pings and pongs client"
+    classpath = sourceSets.main.runtimeClasspath
+    main =  "com.hewecode.rsocketrpc.PingsAndPongsClient"
+    systemProperties.rsocketUseWebsockets = "$rsocketUseWebsockets"
+    systemProperties.rsocketPort = "$rsocketPort"
+    systemProperties.rsocketHost = "$rsocketHost"
+}

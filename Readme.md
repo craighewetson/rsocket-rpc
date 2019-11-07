@@ -35,6 +35,7 @@ The following clients are still a work in progress:
 
 # Roadmap
 * Get project working with [JIP](https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin ), to dockerize the app 
+  * https://phauer.com/2019/no-fat-jar-in-docker-image/
 * Host service within [Micronaut](https://micronaut.io/)
 * Complete PingPong Service/Client project
   * Two streaming options are not working yet
