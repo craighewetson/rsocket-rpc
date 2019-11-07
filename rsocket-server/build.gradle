@@ -1,0 +1,50 @@
+
+buildscript {
+    dependencies {
+        classpath "com.google.protobuf:protobuf-gradle-plugin:$protobufPluginVersion"
+    }
+}
+
+plugins {
+    id 'com.google.protobuf' version '0.8.10' apply false
+}
+
+apply plugin: 'com.google.protobuf'
+apply plugin: 'groovy'
+
+dependencies {
+    compile project(':api')
+
+    implementation "io.rsocket:rsocket-core:$rsocketVersion"
+    implementation "io.rsocket:rsocket-transport-netty:$rsocketVersion"
+    compile "com.google.protobuf:protobuf-java:$protocVersion"
+    implementation "io.rsocket.rpc:rsocket-rpc-core:$rsocketRpcProtobuf"
+    implementation "io.rsocket.rpc:rsocket-rpc-protobuf:$rsocketRpcProtobuf"
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:$protocVersion"
+    }
+    plugins {
+        rsocketRpc {
+            artifact = "io.rsocket.rpc:rsocket-rpc-protobuf:$rsocketRpcProtobuf"
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            rsocketRpc {}
+        }
+    }
+}
+
+task startServer(type: JavaExec) {
+    dependsOn build
+    group = "Execution"
+    description = "Run the PingPong Service Server"
+    classpath = sourceSets.main.runtimeClasspath
+    main = "com.hewecode.rsocketrpc.Server"
+    systemProperties.rsocketUseWebsockets = "$rsocketUseWebsockets"
+    systemProperties.rsocketPort = "$rsocketPort"
+}
+

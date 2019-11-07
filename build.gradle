@@ -1,110 +1,39 @@
-buildscript {
-    ext {
-        protobufPluginVersion = '0.8.7'
-        protocVersion = '3.9.2'
-        rsocketRpcProtobuf  = '0.2.19'
-        rsocketVersion = '1.0.0-RC3'
-        rsocketRPCJs = '0.1.6'
+allprojects {
+    buildscript {
+        ext {
+            protobufPluginVersion = '0.8.7'
+            protocVersion = '3.9.2'
+            rsocketRpcProtobuf = '0.2.19'
+            rsocketVersion = '1.0.0-RC3'
+            rsocketRPCJs = '0.1.6'
+        }
+
+        repositories {
+            mavenCentral()
+            maven {
+                url "https://plugins.gradle.org/m2/"
+            }
+        }
     }
 
+    ext {
+        rsocketUseWebsockets = 'false'
+        rsocketHost = '127.0.0.1'
+        rsocketPort = '7779'
+    }
+
+    apply plugin: 'idea'
+    apply plugin: 'java'
+    apply plugin: 'java-library'
+
     repositories {
-        mavenCentral()
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
+        jcenter()
+        maven { url 'https://repo.spring.io/milestone' }
     }
 
     dependencies {
-        classpath "com.google.protobuf:protobuf-gradle-plugin:$protobufPluginVersion"
-        classpath "de.richsource.gradle.plugins:typescript-gradle-plugin:1.8.0"
-        classpath "com.moowork.gradle:gradle-node-plugin:0.12"
+        implementation 'org.slf4j:slf4j-api:2.0.0-alpha0'
+        runtimeOnly 'org.apache.logging.log4j:log4j-slf4j-impl:2.12.1'
+        runtimeOnly 'ch.qos.logback:logback-classic:1.3.0-alpha4'
     }
-}
-
-plugins {
-    id 'com.google.protobuf' version '0.8.10' apply false
-    id 'java-library'
-}
-
-apply plugin: 'com.google.protobuf'
-apply plugin: 'idea'
-apply plugin: 'groovy'
-apply plugin: 'java'
-
-repositories {
-    jcenter()
-    maven { url 'https://repo.spring.io/milestone' }
-}
-
-dependencies {
-    implementation "io.rsocket:rsocket-core:$rsocketVersion"
-    implementation "io.rsocket:rsocket-transport-netty:$rsocketVersion"
-    compile "com.google.protobuf:protobuf-java:$protocVersion"
-    implementation "io.rsocket.rpc:rsocket-rpc-core:$rsocketRpcProtobuf"
-    implementation "io.rsocket.rpc:rsocket-rpc-protobuf:$rsocketRpcProtobuf"
-
-    implementation "io.rsocket.rpc:rsocket-rpc-protobuf:$rsocketRpcProtobuf"
-
-    implementation 'org.slf4j:slf4j-api:2.0.0-alpha0'
-    runtimeOnly 'org.apache.logging.log4j:log4j-slf4j-impl:2.12.1'
-    runtimeOnly 'ch.qos.logback:logback-classic:1.3.0-alpha4'
-
-}
-
-protobuf {
-    protoc {
-        artifact = "com.google.protobuf:protoc:$protocVersion"
-    }
-    plugins {
-        rsocketRpc {
-            artifact = "io.rsocket.rpc:rsocket-rpc-protobuf:$rsocketRpcProtobuf"
-        }
-    }
-    generateProtoTasks {
-        all()*.plugins {
-            rsocketRpc {}
-        }
-    }
-}
-
-task startServer(type: Exec) {
-    dependsOn build
-    group = "Execution"
-    description = "Run the PingPong Service Server"
-    commandLine "java", "-classpath", sourceSets.main.runtimeClasspath.getAsPath(), "com.hewecode.rsocketrpc.Server"
-}
-
-task startPingAndForgetClient(type: Exec) {
-    dependsOn build
-    group = "Execution"
-    description = "Run the Ping and forget client"
-    commandLine "java", "-classpath", sourceSets.main.runtimeClasspath.getAsPath(), "com.hewecode.rsocketrpc.client.PingAndForgetClient"
-}
-
-task startSinglePingAndPongClient(type: Exec) {
-    dependsOn build
-    group = "Execution"
-    description = "Run the single ping with single pong client"
-    commandLine "java", "-classpath", sourceSets.main.runtimeClasspath.getAsPath(), "com.hewecode.rsocketrpc.client.SinglePingPongClient"
-}
-
-task startSinglePingAndLotsOfPongsClient(type: Exec) {
-    dependsOn build
-    group = "Execution"
-    description = "Run the single ping with multiple returning pongs client"
-    commandLine "java", "-classpath", sourceSets.main.runtimeClasspath.getAsPath(), "com.hewecode.rsocketrpc.client.SinglePingLotsOfPongsClient"
-}
-
-task startPingsAndSinglePongClient(type: Exec) {
-    dependsOn build
-    group = "Execution"
-    description = "Run the pings with single returning pong client"
-    commandLine "java", "-classpath", sourceSets.main.runtimeClasspath.getAsPath(), "com.hewecode.rsocketrpc.client.PingsAndSinglePongClient"
-}
-
-task startPingsAndPongsClient(type: Exec) {
-    dependsOn build
-    group = "Execution"
-    description = "Run the pings and pongs client"
-    commandLine "java", "-classpath", sourceSets.main.runtimeClasspath.getAsPath(), "com.hewecode.rsocketrpc.client.PingsAndPongsClient"
 }

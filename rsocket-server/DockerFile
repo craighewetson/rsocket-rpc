@@ -1,0 +1,12 @@
+FROM oracle/graalvm-ce:19.2.1
+WORKDIR /usr/src/app
+
+COPY build/libs/rsocket-rpc-example.tar .
+RUN tar -xzf rsocket-rpc-example.tar
+RUN rm rsocket-rpc-example.tar
+
+EXPOSE 8083
+
+CMD ["bin/rsocket-rpc-example"]
+
+

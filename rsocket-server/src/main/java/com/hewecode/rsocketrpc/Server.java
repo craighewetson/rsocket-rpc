@@ -14,23 +14,22 @@ import java.util.Optional;
 
 public class Server {
     private static final Logger logger = LoggerFactory.getLogger(Server.class);
-    public static final int port = 7777;
-    private static final boolean useWebsocket = true;
+    private static final int rsocketPort = Integer.parseInt(System.getProperty("rsocketPort", "7777"));
+    private static final boolean useWebSockets = Boolean.parseBoolean(System.getProperty("rsocketUseWebsockets", "true"));
 
     public static void main(String[] args) {
         logger.info("Server is starting up...");
         PingPongServiceImpl serviceImpl = new PingPongServiceImpl();
         final PingPongServiceServer serviceServer = new PingPongServiceServer(serviceImpl, Optional.empty(), Optional.empty());
-
         CloseableChannel closeableChannel =
                 RSocketFactory
                 .receive()
                 .acceptor((setup, sendingSocket) -> Mono.just(new RequestHandlingRSocket(serviceServer)))
-                 .transport(useWebsocket?WebsocketServerTransport.create(port):TcpServerTransport.create(port))
+                 .transport(useWebSockets ?WebsocketServerTransport.create(rsocketPort):TcpServerTransport.create(rsocketPort))
                 .start()
                 .block();
 
-        logger.info("Server has started. Waiting for pings...");
+        logger.info("Server has started. (Port: "+rsocketPort+", Using "+(useWebSockets?"web socket":"tcp")+" as transport).\n Waiting for pings...");
 
         while(!serviceImpl.gotStop()) {
             if(closeableChannel!=null && closeableChannel.isDisposed()) {
@@ -45,13 +44,5 @@ public class Server {
         }
 
         logger.info("Server shutdown");
-    }
-
-    /**
-     * A method for convenience to help with demoing different transports
-     * @return
-     */
-    public static boolean usesWebsocket() {
-       return useWebsocket;
     }
 }

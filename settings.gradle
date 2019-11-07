@@ -1,0 +1,3 @@
+rootProject.name = 'RSocket RPC Example'
+
+include ':api', ':rsocket-server', ':micronaut-server', ':rsocket-client'
