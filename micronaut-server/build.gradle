@@ -11,7 +11,11 @@ plugins {
     id "net.ltgt.apt-idea" version "0.21"
     id "com.github.johnrengelman.shadow" version "4.0.2"
     id "application"
+
+    id 'com.google.cloud.tools.jib' version '1.7.0'
 }
+
+version = 0.1
 
 repositories {
     mavenLocal()
@@ -34,7 +38,7 @@ dependencies {
     compile "io.micronaut:micronaut-runtime"
     compile "io.micronaut:micronaut-http-client"
     compile "io.micronaut:micronaut-http-server-netty"
-    //runtime "ch.qos.logback:logback-classic:1.2.3"
+
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
     testCompile "org.junit.jupiter:junit-jupiter-api"
     testCompile "io.micronaut.test:micronaut-test-junit5"

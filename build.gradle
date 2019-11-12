@@ -15,11 +15,11 @@ allprojects {
             }
         }
     }
-
+    group = 'com.hewecode.learning'
     ext {
-        rsocketUseWebsockets = 'false'
+        rsocketUseWebsockets = 'true'
         rsocketHost = '127.0.0.1'
-        rsocketPort = '7779'
+        rsocketPort = '7777'
     }
 
     apply plugin: 'idea'
